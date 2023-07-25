@@ -10,5 +10,6 @@ namespace WebApp.StrategyPattern.Models
         {
 
         }
+        public DbSet<Product> Products { get; set; }
     }
 }
