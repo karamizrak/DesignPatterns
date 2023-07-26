@@ -20,7 +20,7 @@ namespace WebApp.StrategyPattern.Repositories
 
         public async Task<List<Product>> GetAllByUserId(string userId)
         {
-            return await _context.Products.Where(x=> x.UserId == userId).ToListAsync();
+            return await _context.Products.Where(x => x.UserId == userId).ToListAsync();
         }
 
         public async Task<Product> GetById(string id)
@@ -30,6 +30,7 @@ namespace WebApp.StrategyPattern.Repositories
 
         public async Task<Product> Save(Product product)
         {
+            product.Id = Guid.NewGuid().ToString();
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
             return product;
@@ -39,7 +40,7 @@ namespace WebApp.StrategyPattern.Repositories
         {
             _context.Products.Update(product);
             await _context.SaveChangesAsync();
-            
+
         }
     }
 }
