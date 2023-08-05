@@ -96,7 +96,7 @@ namespace WebApp.StrategyPattern.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,Name,Price,Stock,UserId,CreatedDate")] Product product)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,Name,Price,Stock,UserId")] Product product)
         {
             if (id != product.Id)
             {

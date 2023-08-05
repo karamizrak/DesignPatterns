@@ -1,6 +1,8 @@
- using WebApp.StrategyPattern.Models;
+using WebApp.StrategyPattern.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using WebApp.StrategyPattern.Repositories;
+using System.Runtime.InteropServices;
 
 namespace WebApp.StrategyPattern
 {
@@ -8,8 +10,8 @@ namespace WebApp.StrategyPattern
     {
         public static void Main(string[] args)
         {
-            
-            
+
+
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
@@ -23,7 +25,26 @@ namespace WebApp.StrategyPattern
                 opt.User.RequireUniqueEmail = true;
             }).AddEntityFrameworkStores<AppIdentityDbContext>();
 
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddScoped<IProductRepository>(sp =>
+            {
+                var httpContext = sp.GetRequiredService<IHttpContextAccessor>();
+                var claim = httpContext.HttpContext.User.Claims.Where(x => x.Type == Settings.ClaimdatabaseType).FirstOrDefault();
+                var context = sp.GetRequiredService<AppIdentityDbContext>();
+                if (claim == null) return new ProductRepositoryFromSqlServer(context);
 
+                var databaseType = (EDatabaseType)int.Parse(claim.Value);
+                return databaseType switch
+                {
+                    EDatabaseType.SqlServer => new ProductRepositoryFromSqlServer(context),
+                    EDatabaseType.MongoDb => new ProductRepositoryFromMongoDb(builder.Configuration),
+                    _ => throw new NotImplementedException()
+
+
+                };
+
+
+            });
 
 
 
@@ -37,12 +58,12 @@ namespace WebApp.StrategyPattern
             var app = builder.Build();
 
 
-            using var scope=app.Services.CreateScope();
-                var identityDbContext=scope.ServiceProvider.GetRequiredService<AppIdentityDbContext>();
-                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
-                identityDbContext.Database.Migrate();
-            
-            if(!userManager.Users.Any())
+            using var scope = app.Services.CreateScope();
+            var identityDbContext = scope.ServiceProvider.GetRequiredService<AppIdentityDbContext>();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+            identityDbContext.Database.Migrate();
+
+            if (!userManager.Users.Any())
             {
                 userManager.CreateAsync(new AppUser { Email = "user1@outlook.com", UserName = "user1" }, "Password12*").Wait();
                 userManager.CreateAsync(new AppUser { Email = "user2@outlook.com", UserName = "user2" }, "Password12*").Wait();
@@ -50,7 +71,7 @@ namespace WebApp.StrategyPattern
                 userManager.CreateAsync(new AppUser { Email = "user4@outlook.com", UserName = "user4" }, "Password12*").Wait();
                 userManager.CreateAsync(new AppUser { Email = "user5@outlook.com", UserName = "user5" }, "Password12*").Wait();
             }
-            
+
 
 
 
