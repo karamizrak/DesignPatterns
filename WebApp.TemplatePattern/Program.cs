@@ -44,11 +44,11 @@ namespace WebApp.TemplatePattern
             
             if(!userManager.Users.Any())
             {
-                userManager.CreateAsync(new AppUser { Email = "user1@outlook.com", UserName = "user1" }, "Password12*").Wait();
-                userManager.CreateAsync(new AppUser { Email = "user2@outlook.com", UserName = "user2" }, "Password12*").Wait();
-                userManager.CreateAsync(new AppUser { Email = "user3@outlook.com", UserName = "user3" }, "Password12*").Wait();
-                userManager.CreateAsync(new AppUser { Email = "user4@outlook.com", UserName = "user4" }, "Password12*").Wait();
-                userManager.CreateAsync(new AppUser { Email = "user5@outlook.com", UserName = "user5" }, "Password12*").Wait();
+                userManager.CreateAsync(new AppUser { Email = "user1@outlook.com", UserName = "user1",PictureUrl = "/userpictures/primeuserpicture.png",Description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book." }, "Password12*").Wait();
+                userManager.CreateAsync(new AppUser { Email = "user2@outlook.com", UserName = "user2", PictureUrl = "/userpictures/primeuserpicture.png", Description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book." }, "Password12*").Wait();
+                userManager.CreateAsync(new AppUser { Email = "user3@outlook.com", UserName = "user3", PictureUrl = "/userpictures/primeuserpicture.png", Description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book." }, "Password12*").Wait();
+                userManager.CreateAsync(new AppUser {Email = "user4@outlook.com", UserName = "user4", PictureUrl = "/userpictures/primeuserpicture.png", Description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book." }, "Password12*").Wait();
+                userManager.CreateAsync(new AppUser {Email = "user5@outlook.com", UserName = "user5", PictureUrl = "/userpictures/primeuserpicture.png", Description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book." }, "Password12*").Wait();
             }
             
 
