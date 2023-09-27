@@ -10,5 +10,7 @@ namespace WebApp.CommandPattern.Models
         {
 
         }
+
+        public DbSet<Product> Products { get; set; }
     }
 }

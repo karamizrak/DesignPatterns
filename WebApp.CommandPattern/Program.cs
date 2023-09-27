@@ -1,3 +1,5 @@
+ using DinkToPdf;
+ using DinkToPdf.Contracts;
  using WebApp.CommandPattern.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +24,7 @@ namespace WebApp.CommandPattern
             {
                 opt.User.RequireUniqueEmail = true;
             }).AddEntityFrameworkStores<AppIdentityDbContext>();
+            builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
 
 
@@ -49,6 +52,16 @@ namespace WebApp.CommandPattern
                 userManager.CreateAsync(new AppUser { Email = "user3@outlook.com", UserName = "user3" }, "Password12*").Wait();
                 userManager.CreateAsync(new AppUser { Email = "user4@outlook.com", UserName = "user4" }, "Password12*").Wait();
                 userManager.CreateAsync(new AppUser { Email = "user5@outlook.com", UserName = "user5" }, "Password12*").Wait();
+
+
+                Enumerable.Range(1,30).ToList().ForEach(x =>
+                {
+                    identityDbContext.Products.Add(new Product()
+                    {
+                        Name = $"kalem {x}", Price = x * 100, Stock = x * 50
+                    });
+                    identityDbContext.SaveChanges();
+                });
             }
             
 
