@@ -3,8 +3,9 @@
  using WebApp.CommandPattern.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+ using WebApp.CommandPattern.Commands;
 
-namespace WebApp.CommandPattern
+ namespace WebApp.CommandPattern
 {
     public class Program
     {
@@ -25,6 +26,9 @@ namespace WebApp.CommandPattern
                 opt.User.RequireUniqueEmail = true;
             }).AddEntityFrameworkStores<AppIdentityDbContext>();
             builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
+            builder.Services.AddScoped(typeof(IPdfFile<>), typeof(PdfFile<>));
+            builder.Services.AddScoped(typeof(IExcelFile<>), typeof(ExcelFile<>));
+
 
 
 

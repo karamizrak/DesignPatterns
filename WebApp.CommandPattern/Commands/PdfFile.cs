@@ -4,12 +4,12 @@ using DinkToPdf.Contracts;
 
 namespace WebApp.CommandPattern.Commands
 {
-    public class PdfFile<T>
+    public class PdfFile<T>:IPdfFile<T>
     {
         public readonly List<T> _list;
         private readonly HttpContext _context;
-
         public string FileName => $"{typeof(T).Name}.pdf";
+        
         public string FileType => "application/octet-stream";
 
         public PdfFile(List<T> list, HttpContext context)
@@ -18,7 +18,7 @@ namespace WebApp.CommandPattern.Commands
             _context = context;
         }
 
-        public MemoryStream Create()
+        public Task<MemoryStream> Create()
         {
             var type = typeof(T);
             var sb = new StringBuilder();
@@ -37,7 +37,7 @@ namespace WebApp.CommandPattern.Commands
 
             _list.ForEach(x =>
             {
-                var values = type.GetProperties().Select(s => s.GetValue(s, null)).ToList();
+                var values = type.GetProperties().Select(s => s.GetValue(x, null)).ToList();
                 sb.Append("<tr>");
                 values.ForEach(x =>
                 {
@@ -63,8 +63,9 @@ namespace WebApp.CommandPattern.Commands
 
             var converter = _context.RequestServices.GetService<IConverter>();
             MemoryStream pdfMemory = new(converter.Convert(doc));
+
+            return Task.FromResult(pdfMemory);
             
-            return pdfMemory;
 
         }
     }

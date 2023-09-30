@@ -2,11 +2,12 @@
 
 using ClosedXML.Excel;
 using System.Data;
+using Microsoft.AspNetCore.Mvc;
 
 
 namespace WebApp.CommandPattern.Commands
 {
-    public class ExcelFile<T>
+    public class ExcelFile<T>:IExcelFile<T>
     {
         public readonly List<T> _list;
         public string FileName => $"{typeof(T).Name}.xlsx";
@@ -41,10 +42,11 @@ namespace WebApp.CommandPattern.Commands
 
             _list.ForEach(x =>
             {
-                var values = type.GetProperties().Select(s => s.GetValue(s, null)).ToArray();
+                var values = type.GetProperties().Select(s => s.GetValue(x, null)).ToArray();
                 table.Rows.Add(values);
             });
             return table;
         }
-    }
+
+   }
 }
